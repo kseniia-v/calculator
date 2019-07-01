@@ -1,6 +1,5 @@
 function Calculator(options){
   this.$el = options.element;
-  //this.params =
 
   this.$form = this.$el.querySelector('[data-selector="form"]');
   this.$result = this.$el.querySelector('[data-selector="result"]');
@@ -13,35 +12,66 @@ function Calculator(options){
 }
 
 Calculator.prototype.processCalc = function(event){
-    event.preventDefault();
-    tip = this.$bill.value * this.$tipPerc.value / 100;
-    total = this.$bill.value * (1 + this.$tipPerc.value / 100);
+  event.preventDefault();
+  this.$result.innerHTML = '';
 
-    const div = document.createElement('div');
-    div.className = "totals";
+  let total, tip;
 
-    var spanLabel = document.createElement('span');
-    var spanValue = document.createElement('span');
+  let spans = {
+    'Total Bill': 0,
+    'Tip Amount': 0,
+    'smth': 0
+  }
 
-    spanLabel.textContent = "Total Bill";
-    spanValue.textContent = total;
+  total = this.$bill.value * (1 + this.$tipPerc.value / 100);
+  total = total.toFixed(2);
+  spans['Total Bill'] = total;
 
-    div.appendChild(spanLabel);
-    div.appendChild(spanValue);
+  tip = this.$bill.value * this.$tipPerc.value / 100;
+  tip = tip.toFixed(2);
+  spans['Tip Amount'] = tip;
 
-    var spanLabel = document.createElement('span');
-    var spanValue = document.createElement('span');
+  const div = document.createElement('div');
+  div.className = "totals";
 
-    spanLabel.textContent = "Tip Amount";
-    spanValue.textContent = tip;
+  let l = 2 * Object.keys(spans).length;
 
-    div.appendChild(spanLabel);
-    div.appendChild(spanValue);
+  let j = 0;
+  for (let i = 0; i < l; i++){
+    let span = document.createElement('span');
 
-    this.$result.appendChild(div);
-  //  this.$form.reset()
+    if(i % 2 == 0){
+      var text = Object.keys(spans)[i/2];
+    }else{
+      j++;
+      var text = Object.values(spans)[i-j];
+    }
 
-    console.log(tip);
-    console.log(total);
+    if (text){
+      let span = document.createElement('span');
+      span.textContent = text;
+      span.id = i;
+      div.appendChild(span);
+    }else{
+      let span = document.getElementById(i-1);
+
+      const elem = document.createElement(span);
+      console.log(i-1);
+      console.log(elem);
+    //  div.removeChild(elem);
+    }
+
+
+
+
+  }
+
+
+
+
+  this.$result.appendChild(div);
+  this.$form.reset()
+
+
 
 }
