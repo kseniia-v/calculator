@@ -1,3 +1,3 @@
 const app = new Calculator({
-  element: document.querySelector('[data-component="calculator"]')
+  element: document.querySelector('[data-component="calculator"]');
 })
