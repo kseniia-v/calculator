@@ -6,12 +6,12 @@ function Calculator(options){
   this.$calc = this.$el.querySelector('[data-selector="calculate"]');
 
   this.$calc.addEventListener('click', this.processCalc.bind(this));
-  this.$ifsplit.addEventListener('change', this.addSplitOption.bind(this));
+  this.$ifsplit.addEventListener('change', this.split.bind(this));
 }
 
-Calculator.prototype.addSplitOption = function(event){
-  this.$split = this.$el.querySelector('div[id="split"]');
+Calculator.prototype.split = function(event){
   this.$between = this.$el.querySelector('span[id="between"]');
+  this.$split = this.$el.querySelector('div[id="split"]');
 
   if(event.target.checked){
     let span, label, input;
@@ -50,46 +50,46 @@ Calculator.prototype.processCalc = function(event){
 
   event.preventDefault();
 
-  this.$bill = this.$el.querySelector('[data-selector="bill"]');
-  this.$tipPerc = this.$el.querySelector('[data-selector="perc"]');
   this.$result = this.$el.querySelector('div[id="result"]');
-
   if(this.$result){
     this.$el.removeChild(this.$result);
   }
 
-  total = (this.$bill.value * (1 + this.$tipPerc.value / 100)).toFixed(2);
+  this.$bill = this.$el.querySelector('[data-selector="bill"]');
+  this.$tipPerc = this.$el.querySelector('[data-selector="perc"]');
+
+  total = this.$bill.value * (1 + this.$tipPerc.value / 100);
+  total = total.toFixed(2);
   vals['Total Bill'] = total;
 
-  tip = (this.$bill.value * this.$tipPerc.value / 100).toFixed(2);
+  tip = this.$bill.value * this.$tipPerc.value / 100;
+  tip = tip.toFixed(2);
   vals['Tip Amount'] = tip;
 
   result = document.createElement('div');
   result.id = "result";
   result.className = "totals";
-  this._render(result,vals);
+  this.show(result,vals);
 
   if(this.$ifsplit.checked){
     this.$split = this.$el.querySelector('input[name="split"]');
     let persons = this.$split.value;
-    pperson=this._calculateSplit(persons,total,tip,vals);
+    pperson=this.splitCalc(persons,total,tip,vals);
     result.appendChild(pperson);
-  }
-
-  let msg = this._note(tip);
-  if (msg){
-    note = document.createElement('p');
-    note.textContent = msg;
-    result.appendChild(note);
   }
 
   this.$el.appendChild(result);
 
 }
 
-Calculator.prototype._calculateSplit = function(persons,bill,tip,args){
-    let billPerPerson = (bill / persons).toFixed(2);
-    let tipPerPerson = (tip / persons).toFixed(2);
+
+
+
+
+
+Calculator.prototype.splitCalc = function(persons,bill,tip,args){
+    let billPerPerson = bill / persons;
+    let tipPerPerson = tip / persons;
 
     let pperson = document.createElement('div');
     pperson.id = "perperson";
@@ -101,12 +101,14 @@ Calculator.prototype._calculateSplit = function(persons,bill,tip,args){
     args['Tip Amount'] = tipPerPerson;
 
     pperson.appendChild(p);
-    this._render(pperson,args);
+    this.show(pperson,args);
 
     return pperson;
+
 }
 
-Calculator.prototype._render = function(elem,args){
+
+Calculator.prototype.show = function(elem,args){
   let l, j = 0;
   l = 2 * Object.keys(args).length;
   for (let i = 0; i < l; i++){
@@ -125,30 +127,4 @@ Calculator.prototype._render = function(elem,args){
       elem.removeChild(elem.lastChild);
     }
   }
-}
-
-Calculator.prototype._note = function(value){
-  let note = '';
-  if(value >= 15 && value < 20){
-    note = 'Nice tips, thanks!';
-  }
-  if(value >= 20 && value < 30){
-    note = 'You\'re quite generous!';
-  }
-  if(value >= 30 && value < 40){
-    note = 'One more bottle of beer to this awesome guy!';
-  }
-  if(value >= 40 && value < 50){
-    note = 'You can eat here for free next time!';
-  }
-  if(value >= 50){
-    note = 'Oh no, we cannot afford it, but if you insist...';
-  }
-  if(value < 10 && value > 0){
-    note = 'OK, all can have their ups and downs...';
-  }
-  if(value == 0){
-    note = 'Have never seen such a mean person before!';
-  }
-  return note;
 }
