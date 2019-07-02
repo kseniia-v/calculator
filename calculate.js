@@ -8,7 +8,6 @@ function Calculator(options){
   this.$calc = this.$el.querySelector('[data-selector="calculate"]');
 
   this.$calc.addEventListener('click', this.processCalc.bind(this));
-
 }
 
 Calculator.prototype.processCalc = function(event){
@@ -53,25 +52,20 @@ Calculator.prototype.processCalc = function(event){
       span.id = i;
       div.appendChild(span);
     }else{
-      let span = document.getElementById(i-1);
-
-      const elem = document.createElement(span);
-      console.log(i-1);
-      console.log(elem);
-    //  div.removeChild(elem);
+      div.removeChild(div.lastChild);
     }
-
-
-
-
   }
-
-
-
 
   this.$result.appendChild(div);
   this.$form.reset()
 
 
+
+}
+
+Calculator.prototype.split = function(persons,bill,tip){
+  billPerPerson = bill / persons;
+  tipPerPerson = tip / persons;
+  
 
 }
