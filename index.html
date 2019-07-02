@@ -3,28 +3,34 @@
   <head>
     <meta charset="UTF-8">
     <title>Tip Calculator</title>
-    <link rel="stylesheet" href=#></linl>
+    <link rel="stylesheet" href=#></link>
     <script defer src="calculate.js"></script>
     <script defer src="main.js"></script>
   </head>
   <body>
     <div data-component="calculator">
-
       <form data-selector="form">
-        <label>Bill:</label>
-        <input data-selector="bill" type="text" autocomplete="off" value="100">
-
-        <label>Tip:</label>
-        <input data-selector="perc" type="text" autocomplete="off" value="7">
-
-        <input data-selector="calculate" type="button" value="Calculate">
-
+        <div>
+          <label>Bill</label>
+          <span>&#36;</span>
+          <input data-selector="bill" type="number" autocomplete="off" value="100">
+        </div>
+        <div>
+          <label>Tip</label>
+          <input data-selector="perc" type="number" autocomplete="off" value="7">
+          <span>&#37;</span>
+        </div>
+        <div>
+          <label>Split</label>
+          <input data-selector="ifsplit" type="checkbox" autocomplete="off">
+        </div>
+        <div>
+          <input data-selector="calculate" type="button" value="Calculate">
+        </div>
       </form>
 
       <div data-selector="result">
-        
       </div>
-
     </div>
   </body>
 </html>
